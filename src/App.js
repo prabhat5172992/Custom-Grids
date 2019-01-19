@@ -3,7 +3,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import Pagination from "material-ui-flat-pagination";
 import Grid from './grid';
+import SortableGrid from './sortableGrid';
 import constants from './constants';
+import {doSort} from './helper';
 
 const theme = createMuiTheme();
 
@@ -13,24 +15,42 @@ class App extends Component {
     super(props);
     this.state ={
       headers: constants.headers,
-      data: [],
+      paginatedRow: [],
+      rows: [],
       offset: 0,
-      pageNumber: 1
+      pageNumber: 1,
+      sortDirection: "ASC"
     } 
+    this.sortRows = this.sortRows.bind(this);
   }
   
   componentDidMount(){
-    this.handleClick(0,1);
+    let data = [];
+    Array(79).fill().map((item, index) => 
+        data.push({"Name": `Prabhat${index+1}`, "Age": `${Math.floor(Math.random()*100)}`, "Company": "Wipro", "Salary": `${Math.floor(Math.random()*1000000)}`}));
+    this.setState({
+      rows: data
+    },()=> this.handleClick(0,1));
   }
 
   handleClick(offset, pageNumber) {
-    let rows = constants.data.slice();
+    let rows = this.state.rows.slice();
     let lowerVal = (pageNumber === 1) ? 0 : (pageNumber-1)*10;
     let upperVal = rows.length > pageNumber*10 ? pageNumber*10 : rows.length;
-    const data = rows.slice(lowerVal, upperVal);
-    this.setState({ offset, pageNumber, data});
-    console.log("OFFSET", offset, pageNumber, lowerVal, upperVal, rows.length);
-    console.log("DATA-----------", data);
+    const paginatedRow = rows.slice(lowerVal, upperVal);
+    this.setState({ offset, pageNumber, paginatedRow});
+  }
+
+  sortRows(sortColumn){
+    const rows = this.state.rows.slice();
+    const sortDirection = this.state.sortDirection;
+    const data = doSort(sortColumn, sortDirection, rows);
+    const paginatedRow = data.slice(0,10);
+    this.setState({
+      sortDirection: sortDirection==="ASC"? "DESC" : "ASC",
+      rows: data,
+      paginatedRow
+    });
   }
 
   render() {
@@ -38,17 +58,28 @@ class App extends Component {
       <MuiThemeProvider theme={theme}>
         <div style={{margin:"2%"}}> 
           <h1> Custom Table </h1>
-          {this.state.data.length ? 
-          <Grid 
-            headers={this.state.headers} 
-            data={this.state.data}
-          /> : <h2> No Data to Display!! </h2>}
+           <div style={{marginBottom:"5px"}}>
+            {this.state.rows.length ? 
+            <Grid 
+              headers={this.state.headers} 
+              data={this.state.paginatedRow}
+            /> : <h2> No Data to Display!! </h2>}
+          </div>
+          <h1> Sortable Grid </h1>
+          <div>
+            {this.state.rows.length ?
+            <SortableGrid 
+              headers={this.state.headers} 
+              data={this.state.paginatedRow}
+              sortRows={this.sortRows}
+            /> : <h2> No Data to Display for Sortable Grid!! </h2>}
+          </div>
           <CssBaseline />
           <div style={{textAlign: "end"}}>
             <Pagination
               limit={10}
               offset={this.state.offset}
-              total={constants.data.length}
+              total={this.state.rows.length}
               onClick={(e, offset, pageNumber) => this.handleClick(offset, pageNumber)}
             />
           </div>
