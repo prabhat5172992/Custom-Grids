@@ -13,7 +13,7 @@ export default {
         {
             key: "Company",
             width: "25%",
-            sortable: true
+            sortable: false
         },
         {
             key: "Salary",
