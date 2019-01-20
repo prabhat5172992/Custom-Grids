@@ -4,6 +4,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import Pagination from "material-ui-flat-pagination";
 import Grid from './grid';
 import SortableGrid from './sortableGrid';
+import ExpandableGrid from './expandableGrid';
 import constants from './constants';
 import {doSort} from './helper';
 
@@ -15,6 +16,7 @@ class App extends Component {
     super(props);
     this.state ={
       headers: constants.headers,
+      expandableHeaders: constants.expandableHeaders,
       paginatedRow: [],
       rows: [],
       offset: 0,
@@ -26,7 +28,7 @@ class App extends Component {
   
   componentDidMount(){
     let data = [];
-    Array(79).fill().map((item, index) => 
+    Array(158).fill().map((item, index) => 
         data.push({"Name": `Prabhat${index+1}`, "Age": `${Math.floor(Math.random()*100)}`, "Company": "Wipro", "Salary": `${Math.floor(Math.random()*1000000)}`}));
     this.setState({
       rows: data
@@ -64,6 +66,13 @@ class App extends Component {
               headers={this.state.headers} 
               data={this.state.paginatedRow}
             /> : <h2> No Data to Display!! </h2>}
+          </div>
+          <h1> Expandable Table </h1>
+           <div style={{marginBottom:"5px"}}>
+            <ExpandableGrid 
+              expandableHeaders={this.state.expandableHeaders} 
+              //data={this.state.paginatedRow}
+            />
           </div>
           <h1> Sortable Grid </h1>
           <div>

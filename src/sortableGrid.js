@@ -40,11 +40,10 @@ export default class Grid extends React.Component {
         let headers = [];
         try{
             if(this.state.headers.length){
-                //eslint-disable-next-line
-                {this.state.headers.map((item, index) => {
+                this.state.headers.forEach((item, index) => {
                     if(item.sortable){
                         headers.push([
-                            <th colSpan={2} style={{textAlign:"center", width: item.width, "borderBottom": "1px solid black", "borderTop": "1px solid black", "borderLeft": "1px solid black", "borderRight": "1px solid black"}}>
+                            <th colSpan={2} style={{textAlign:"center", width: item.width, "borderBottom": "1px solid black", "borderTop": "1px solid black", "borderLeft": "1px solid black", "borderRight": "1px solid black", "overflow": "hidden"}}>
                                 {/* eslint-disable-next-line */}
                                 <a style={{cursor: "pointer"}} onClick={()=>this.props.sortRows(item.key)}> {item.key} </a>
                             </th>
@@ -52,13 +51,13 @@ export default class Grid extends React.Component {
                     }
                     else{
                         headers.push([
-                            <th colSpan={2} style={{textAlign:"center", width: item.width, "borderBottom": "1px solid black", "borderTop": "1px solid black", "borderLeft": "1px solid black", "borderRight": "1px solid black"}}>
+                            <th colSpan={2} style={{textAlign:"center", width: item.width, "borderBottom": "1px solid black", "borderTop": "1px solid black", "borderLeft": "1px solid black", "borderRight": "1px solid black", "overflow": "hidden"}}>
                                 {item.key}
                             </th>
                         ]);
                     }
                     
-                })}
+                })
                 return headers;
             }
         }
@@ -74,15 +73,14 @@ export default class Grid extends React.Component {
         let rowStyle;
         try{
             if(this.state.data.length){
-                //eslint-disable-next-line
-                {this.state.data.forEach((item, index) => {
+                this.state.data.forEach((item, index) => {
                     rowStyle = (index%2)===0 ? {backgroundColor:"#E8ECEB", "borderBottom": "1px solid black", hight: "35px"} : {backgroundColor:"#FFFFFF", "borderBottom": "1px solid black", hight: "35px"};
                     rows.push(
                     <tr key={"row-data-"+ index} style={rowStyle}>
                         {this.state.headers.map(val => [<td colSpan={2} style = {{width:"inherit", textAlign:"center", margin:"2px", "borderBottom": "1px solid black", "borderTop": "1px solid black", "borderLeft": "1px solid black", "borderRight": "1px solid black", "overflow": "hidden"}}>{item[val.key]}</td>])}
                     </tr>)
                     
-                })}
+                })
                 return rows;
             }
         }
