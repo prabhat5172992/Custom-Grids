@@ -47,4 +47,12 @@ function doSort(sortColumn, sortDirection, rows){
     return rows.sort(comparer);
 }
 
+// function setTimeout(){
+
+// }
+
+// function setTimeout(){
+    
+// }, timeout);
+
 export {doSort};

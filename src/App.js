@@ -7,6 +7,7 @@ import SortableGrid from './sortableGrid';
 import ExpandableGrid from './expandableGrid';
 import constants from './constants';
 import {doSort} from './helper';
+import Toastr from './toaster';
 
 const theme = createMuiTheme();
 
@@ -40,6 +41,7 @@ class App extends Component {
     let lowerVal = (pageNumber === 1) ? 0 : (pageNumber-1)*10;
     let upperVal = rows.length > pageNumber*10 ? pageNumber*10 : rows.length;
     const paginatedRow = rows.slice(lowerVal, upperVal);
+    //toastr.info('Are you the 6 fingered man?');
     this.setState({ offset, pageNumber, paginatedRow});
   }
 
@@ -58,6 +60,7 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
+        <Toastr status="SUCCESS" message="Created!!" timeout={3000} />
         <div style={{margin:"2%"}}> 
           <h1> Custom Table </h1>
            <div style={{marginBottom:"5px"}}>
