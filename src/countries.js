@@ -9,6 +9,7 @@ export default class Countries extends React.Component {
       countries: [],
       name: [],
     };
+    this.getDropdownButtonLabel = this.getDropdownButtonLabel.bind(this);
   }
 
   getAllCountries() {
@@ -27,6 +28,16 @@ export default class Countries extends React.Component {
           console.log(err);
         }
       });
+  }
+
+  getDropdownButtonLabel({ placeholderButtonLabel, value }) {
+    let count = 0;
+    console.log("Values.......", placeholderButtonLabel);
+    console.log("second value", value);
+    if (value) {
+      count = value.length;
+    }
+    return `Selected ${count}`;
   }
 
   render() {
@@ -54,7 +65,10 @@ export default class Countries extends React.Component {
           onClick={() => this.getAllCountries()}
         />
         <br />
-        <ReactMultiSelectCheckboxes options={this.state.name} />
+        <ReactMultiSelectCheckboxes
+          options={this.state.name}
+          getDropdownButtonLabel={this.getDropdownButtonLabel}
+        />
         <br />
         <select id="cars">
           <option value="countries">All Countries</option>
